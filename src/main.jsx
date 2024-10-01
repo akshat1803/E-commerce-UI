@@ -4,10 +4,11 @@ import ReactDOM from 'react-dom/client';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import App from './App';
-import Products from './Pages/Products'; // Adjust the import as necessary
-import Cart from './Pages/Cart'; // Adjust the import as necessary
-import Home from './Pages/Home'; // Adjust the import as necessary
-import LoginRegister from './Pages/Register'; // Adjust the import as necessary
+import Products from './Pages/Products';
+import Cart from './Pages/Cart';
+import Home from './Pages/Home';
+import LoginRegister from './Pages/Register';
+import './index.css'
 
 const router = createBrowserRouter([
     {

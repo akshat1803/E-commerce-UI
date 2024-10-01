@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+import { CartContext } from '../context/CartContext'; // Adjust the path as needed
 
 const Home = () => {
+    const { addToCart } = useContext(CartContext); // Use the CartContext
     const [featuredProducts, setFeaturedProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [expandedProductIds, setExpandedProductIds] = useState([]); // Track expanded products
+    const [successMessage, setSuccessMessage] = useState(''); // State for success message
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -34,6 +37,16 @@ const Home = () => {
         );
     };
 
+    const handleAddToCart = (product) => {
+        addToCart(product); // Add product to cart
+        setSuccessMessage('Product added successfully!'); // Set success message
+
+        // Clear the message after 3 seconds
+        setTimeout(() => {
+            setSuccessMessage('');
+        }, 3000);
+    };
+
     if (loading) {
         return <div className="text-center"><div className="spinner-border" role="status"></div></div>;
     }
@@ -44,6 +57,12 @@ const Home = () => {
 
     return (
         <div className="container mt-4">
+            {/* Display the success message as a Bootstrap alert */}
+            {successMessage && (
+                <div className="custom-alert alert alert-success text-center" role="alert">
+                    {successMessage}
+                </div>
+            )}
             <h2 className="text-center mb-4">Featured Products</h2>
             {featuredProducts.length > 0 ? (
                 <div className="row">
@@ -73,6 +92,12 @@ const Home = () => {
                                             {isExpanded ? 'Read Less' : 'Read More'}
                                         </button>
                                         <p className="card-text fw-bold">Price: ${product.price}</p>
+                                        <button 
+                                            className="btn btn-success" 
+                                            onClick={() => handleAddToCart(product)}
+                                        >
+                                            Add to Cart
+                                        </button>
                                     </div>
                                 </div>
                             </div>

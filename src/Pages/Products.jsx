@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { CartContext } from '../context/CartContext';
 
+
+
 const Products = () => {
     const { addToCart } = useContext(CartContext);
     const [products, setProducts] = useState([]);
@@ -8,7 +10,8 @@ const Products = () => {
     const [error, setError] = useState('');
     const [selectedCategory, setSelectedCategory] = useState('');
     const [categories, setCategories] = useState([]);
-    const [expandedDescription, setExpandedDescription] = useState({}); // Keep track of expanded products
+    const [expandedDescription, setExpandedDescription] = useState({});
+    const [successMessage, setSuccessMessage] = useState(''); // Success message state
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -41,7 +44,13 @@ const Products = () => {
         : products;
 
     const handleAddToCart = (product) => {
-        addToCart(product); 
+        addToCart(product);
+        setSuccessMessage('Product added successfully');  // Set success message
+
+        // Clear the message after 3 seconds
+        setTimeout(() => {
+            setSuccessMessage('');
+        }, 3000);
     };
 
     const toggleDescription = (id) => {
@@ -68,7 +77,15 @@ const Products = () => {
 
     return (
         <div className="container mt-4">
+            {/* Display the success message as a Bootstrap alert */}
+            {successMessage && (
+                <div className="custom-alert alert alert-success text-center" role="alert">
+                    {successMessage}
+                </div>
+            )}
+            
             <h2 className="text-center mb-4">All Products</h2>
+
             <div className="mb-3">
                 <label htmlFor="categorySelect" className="form-label">Filter by Category:</label>
                 <select 
@@ -85,6 +102,7 @@ const Products = () => {
                     ))}
                 </select>
             </div>
+
             {filteredProducts.length > 0 ? (
                 <div className="row">
                     {filteredProducts.map((product) => (
